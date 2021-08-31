@@ -1,10 +1,14 @@
 package com.joohyung.book.springboot;
 
+import com.joohyung.book.springboot.config.auth.SecurityConfig;
 import com.joohyung.book.springboot.web.HelloController;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -16,13 +20,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // 스프링 부트 테스트와 JUnit사이의 연결자
 @ExtendWith(SpringExtension.class)
 // Web에만 집중하도록 하는 스프링 테스트 어노테이션
-@WebMvcTest(controllers = HelloController.class)
+@WebMvcTest(controllers = HelloController.class,
+        excludeFilters = {
+                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)
+        }
+)
 public class HelloControllerTest {
     // 스프링이 관리하는 bean을 주입받음
     @Autowired
     // 웹 API테스트를 위해 사용
     private MockMvc mvc;
 
+    @WithMockUser(roles="USER")
     @Test
     public void hello_returned() throws Exception {
         String hello = "hello";
@@ -33,7 +42,7 @@ public class HelloControllerTest {
                 // perform()의 결과 입증 2: 본문의 내용을 검증
                 .andExpect(content().string(hello));
     }
-
+    @WithMockUser(roles="USER")
     @Test
     public void helloDto_returned() throws Exception {
         String name = "hello";

@@ -1,3 +1,6 @@
+// API호출을 위한 JS파일
+// REST 규약(CRUD에서 HTTP Method로의 매핑)
+// 생성(Create): POST, 읽기(Read): GET, 수정(Update): PUT, 삭제(Delete): DELETE
 var main = {
     init : function () {
         var _this = this;
@@ -40,7 +43,7 @@ var main = {
         var id = $('#id').val();
 
         $.ajax({
-            type: 'PUT',
+            type: 'PUT',                // @PutMapping("/api/v1/posts/{id}")
             url: '/api/v1/posts/'+id,
             dataType: 'json',
             contentType:'application/json; charset=utf-8',
