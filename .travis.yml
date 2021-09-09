@@ -37,6 +37,17 @@ deploy:
     local_dir: deploy
     wait-until-deployed: true
 
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: joohyung-springboot-build
+    key: joohyung-springboot-webservice.zip
+    build-type: zip
+    application: joohyung-springboot-webservice
+    deployment-group: joohyung-springboot-webservice-group
+    region: ap-northeast-2
+    wait-until-deployed: true
+
 # CI 실행 완료시 자동으로 메일로 알림
 notifications:
   email:
