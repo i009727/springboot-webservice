@@ -18,7 +18,27 @@ cache:
 # 프로젝트 내부 gradlew을 통해 clean & build수행
 script: "./gradlew clean build"
 
+# deploy가 실행되기 전에 수행할 내용
+# 현재위치의 모든파일을 압축하여 새 디렉토리를 생성하고 압축파일을 이동시킴
+before_deploy:
+  - zip -r joohyung-springboot-webservice *
+  - mkdir -p deploy
+  - mv joohyung-springboot-webservice.zip deploy/joohyung-springboot-webservice.zip
+
+# before_deploy때 생성한 deploy 디렉토리 내 파일들을 S3로 전송
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: joohyung-springboot-build
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: private
+    local_dir: deploy
+    wait-until-deployed: true
+
 # CI 실행 완료시 자동으로 메일로 알림
 notifications:
   email:
-    recipients: "i009727@kyonggi.ac.kr"
+    # recipients: "i009727@kyonggi.ac.kr"
+    recipients: "i00960910@gmail.com"
