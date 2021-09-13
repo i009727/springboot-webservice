@@ -2,7 +2,7 @@ version: 0.0        # codedeploy의 버전정보
 os: linux
 files:
   - source: /       # codedeploy로 부터 받은 파일중 destination으로 전달할 대상(/: 전체파일)
-    destination: /home/ec2-user/app/step2/zip/
+    destination: /home/ec2-user/app/step3/zip/
     overwrite: yes  # 덮어쓰기 옵션
 
 permissions:
