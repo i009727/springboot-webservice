@@ -12,7 +12,15 @@ permissions:
     group: ec2-user
 
 hooks:
-  ApplicationStart:
-    - location: deploy.sh
+  AfterInstall:
+    - location: stop.sh   # nginx와 연결되어 있지 않은 springboot 종료
       timeout: 60
       runas: ec2-user
+  ApplicationStart:
+    - location: start.sh  # nginx와 연결되어 있지 않은 port로 새로운 버전의 springboot 시작
+      timeout: 60
+      runas: ec2-user
+  ValidateService:
+    - location: health.sh # 새로운 springboot가 정상 실행되는지 확인
+      timeout: 60
+      runas: ec2-user1
