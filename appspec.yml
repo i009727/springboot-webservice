@@ -1,4 +1,4 @@
-version: 0.0        # codedeploy의 버전정보
+version: 0.0        # codedeploy의 버전정보d
 os: linux
 files:
   - source: /       # codedeploy로 부터 받은 파일중 destination으로 전달할 대상(/: 전체파일)
