@@ -23,7 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .authorizeRequests()
                     // 권한 관리 대상을 지정하는 옵션
                     // "/"등 지정된 URL들은 permitAll()을 통해 전체 열람 권한을 지정
-                    .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**")
+                    .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/profile")
                         .permitAll()
                     // "/api/v1/**"주소를 갖는 API는 USER권한을 갖는 사용자만 열람가능하게 지정
                     // Role.USER.name(): Enum USER 객체의 문자열 반환(USER)
