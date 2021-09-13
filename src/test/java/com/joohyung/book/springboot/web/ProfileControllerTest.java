@@ -1,6 +1,5 @@
 package com.joohyung.book.springboot.web;
 
-import javafx.beans.binding.StringExpression;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
