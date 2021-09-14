@@ -4,7 +4,7 @@ ABSPATH=$(readlink -f $0)
 ABSDIR=$(dirname $ABSPATH)    # 현재 stop.sh가 속해 있는 경로
 source ${ABSDIR}/profile.sh   # 일종의 import문 => profile.sh의 함수 사용 가능
 
-function swittch_proxy() {
+function switch_proxy() {
   IDLE_PORT=$(find_idle_port)
 
   echo "> 전환할 port: $IDLE_PORT"
