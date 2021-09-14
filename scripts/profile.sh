@@ -1,38 +1,38 @@
 #!/usr/bin/env bash
 
-# 쉬고있는 profile 찾기: real1이 쉬는중->real2 사용, real2가 쉬는중->real1 사용
-function find_idle_profile() {
-  # $(curl -s -o /dev/null -w "%{http_code}" http://localhost/profile)
-  #     : 현재 nginx가 보고있는 springboot가 정상 수행중인지 확인(리턴값: HttpStatus)
-  #     : 정상은 200, 비정상은 400~503값 이므로 400이상 값은 모두 예외처리 => real2로 profile변경
-  RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/profile)
+# bash는 return value가 안되니 *제일 마지막줄에 echo로 해서 결과 출력*후, 클라이언트에서 값을 사용한다
 
-  if [ ${RESPONSE_CODE} -ge 400 ]   # 400보다 큰값 리턴
-  then
-    CURRENT_PROFILE=real2
-  else
-    CURRENT_PROFILE=$(curl -s hyyp://localhost/profile)
-  fi
+# 쉬고 있는 profile 찾기: real1이 사용중이면 real2가 쉬고 있고, 반대면 real1이 쉬고 있음
+function find_idle_profile()
+{
+    RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/profile)
 
-  # IDLE_PROFILE: 현재 nginx에 연결되어 있지 않은 profile
-  if [ ${CURRENT_PROFILE} == real1 ]
-  then
-    IDLE_PROFILE=real2
-  else
-    IDLE_PROFILE=real1
-  fi
+    if [ ${RESPONSE_CODE} -ge 400 ] # 400 보다 크면 (즉, 40x/50x 에러 모두 포함)
+    then
+        CURRENT_PROFILE=real2
+    else
+        CURRENT_PROFILE=$(curl -s http://localhost/profile)
+    fi
 
-  echo "${IDLE_PROFILE}"
+    if [ ${CURRENT_PROFILE} == real1 ]
+    then
+      IDLE_PROFILE=real2
+    else
+      IDLE_PROFILE=real1
+    fi
+
+    echo "${IDLE_PROFILE}"
 }
 
-# 쉬고있는 profile의 port찾기
-# bash는 값을 반환할 수 없으므로 마지막 line에 결과를 출력한 후 클라이언트에서 이 값을 사용하도록 설계
-function find_idle_port() {
-  IDLE_PROFILE=$(find_idle_profile)
-  if [ ${IDLE_PROFILE} == real1 ]
-  then
-    echo "8081"
-  else
-    echo "8082"
-  fi
+# 쉬고 있는 profile의 port 찾기
+function find_idle_port()
+{
+    IDLE_PROFILE=$(find_idle_profile)
+
+    if [ ${IDLE_PROFILE} == real1 ]
+    then
+      echo "8081"
+    else
+      echo "8082"
+    fi
 }
