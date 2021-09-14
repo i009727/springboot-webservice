@@ -13,9 +13,9 @@ function find_idle_profile() {
   else
     CURRENT_PROFILE=$(curl -s http://localhost/profile)
   fi
-  echo "> CURRENT_PROFILE: ${CURRENT_PROFILE}"
+
   # IDLE_PROFILE: 현재 nginx에 연결되어 있지 않은 profile
-  if [ ${CURRENT_PROFILE} == real1 ]
+  if [ ${CURRENT_PROFILE} = real1 ]
   then
     IDLE_PROFILE=real2
   else
