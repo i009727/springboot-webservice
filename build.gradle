@@ -4,7 +4,7 @@ plugins { // (1)
     id 'java'
 }
 
-group 'com.jojoldu.book'
+group 'com.joohyung.book'
 version '1.0.1-SNAPSHOT-'+new Date().format("yyyyMMddHHmmss")
 sourceCompatibility = 1.8
 
